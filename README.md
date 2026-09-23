@@ -13,8 +13,8 @@ An [MCP](https://modelcontextprotocol.io) server that gives AI assistants (Claud
 | `extract_video_frames` | Extract scene-change or evenly spaced frames from video files, with public image links, timestamps and a free contact sheet. | **$0.002** per frame |
 | `download_images` | Download every image from web pages or image links, de-duplicated and filtered, with public download URLs. | **$0.002** per image |
 | `check_domain_authority` | 0-100 domain authority from the open Common Crawl web graph (133M domains): web rank, PageRank rank, top-% percentile and monthly trend. | **$0.001** per domain scored (unranked domains free) |
-| `enrich_company` (coming soon) | Company profile from a domain or name: logo, description, social profiles, app links and key pages, plus industry, HQ, founding year, employees, revenue and ticker from Wikidata. | **$0.003** per company enriched |
-| `upscale_image` (coming soon) | Upscale images 2x or 4x with Real-ESRGAN (photo or anime model), transparency kept, with public download links. | **$0.01** per image ($0.06 per large image with allowLargeImages) |
+| `enrich_company` | Company profile from a domain or name: logo, description, social profiles, app links and key pages, plus industry, HQ, founding year, employees, revenue and ticker from Wikidata. | **$0.003** per company enriched |
+| `upscale_image` | Upscale images 2x or 4x with Real-ESRGAN (photo or anime model), transparency kept, with public download links. | **$0.01** per image ($0.06 per large image with allowLargeImages) |
 | `get_topic_trends` (coming soon) | Interest over time for topics on a shared 0-100 scale (a Google Trends alternative) from official Wikipedia pageviews since 2015: peak, trend, spikes and interest by language. | **$0.003** per topic |
 | `get_trending_topics` (coming soon) | The most-read topics of a day per country or Wikipedia language edition, with views and a one-line description. | **$0.0005** per trending article |
 | `check_website_traffic_rank` (coming soon) | Website popularity from real Chrome user data (CrUX): global rank tier, tier in 40 countries, top countries and monthly trend, plus Majestic rank and referring subnets. | **$0.002** per domain ranked (unranked domains free) |
@@ -22,7 +22,7 @@ An [MCP](https://modelcontextprotocol.io) server that gives AI assistants (Claud
 
 Failed or unreachable inputs are **not charged**.
 
-> **Coming soon:** `enrich_company`, `upscale_image`, `get_topic_trends`, `get_trending_topics`, `check_website_traffic_rank`, `search_free_images` are listed already, but their actors are not yet public on the Apify Store; until they are, calls to them return an "actor not yet public" error (nothing is charged).
+> **Coming soon:** `get_topic_trends`, `get_trending_topics`, `check_website_traffic_rank`, `search_free_images` are listed already, but their actors are not yet public on the Apify Store; until they are, calls to them return an "actor not yet public" error (nothing is charged).
 <!-- tools:end -->
 
 ## How billing works
