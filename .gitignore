@@ -6,3 +6,4 @@ build/
 *.mcpb
 CLAUDE.md
 PUBLISH.md
+.tools/

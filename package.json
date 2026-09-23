@@ -2,7 +2,7 @@
   "name": "kanto-labs-mcp",
   "version": "1.2.0",
   "description": "MCP server for Kanto Labs' Apify actors: website tech stack, document-to-Markdown, SEO audit, OCR, domain lookup, domain authority, website traffic rank, company enrichment, topic trends, free image search, AI image upscaling, video frames and bulk image download.",
-  "mcpName": "io.github.kanto-labs/kanto-labs-mcp",
+  "mcpName": "io.github.Akhiyugo/kanto-labs-mcp",
   "type": "module",
   "bin": {
     "kanto-labs-mcp": "dist/index.js"

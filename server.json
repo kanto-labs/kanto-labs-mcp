@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.kanto-labs/kanto-labs-mcp",
+  "name": "io.github.Akhiyugo/kanto-labs-mcp",
   "title": "Kanto Labs",
   "description": "Web data, SEO, domain, company, trends, OCR, document and image tools for AI assistants via Apify.",
   "repository": {
