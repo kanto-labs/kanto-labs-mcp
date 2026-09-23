@@ -10,9 +10,9 @@ An [MCP](https://modelcontextprotocol.io) server that gives AI assistants (Claud
 | `audit_website_seo` | On-page SEO audit: 0-100 score and prioritized issues, robots.txt, sitemap, llms.txt and AI-crawler checks, optional broken links and crawl. | **$0.004** per page |
 | `extract_text_from_image` | OCR text from images, screenshots, photos and scanned PDFs, in reading order with confidence and optional line boxes. | **$0.003** per image or PDF page ($0.008 with quality "accurate") |
 | `lookup_domain` | Domain RDAP/WHOIS, DNS records, SSL certificate expiry and SPF/DKIM/DMARC email security grade. | **$0.003** per domain |
-| `extract_video_frames` (coming soon) | Extract scene-change or evenly spaced frames from video files, with public image links, timestamps and a free contact sheet. | **$0.002** per frame |
-| `download_images` (coming soon) | Download every image from web pages or image links, de-duplicated and filtered, with public download URLs. | **$0.002** per image |
-| `check_domain_authority` (coming soon) | 0-100 domain authority from the open Common Crawl web graph (133M domains): web rank, PageRank rank, top-% percentile and monthly trend. | **$0.001** per domain scored (unranked domains free) |
+| `extract_video_frames` | Extract scene-change or evenly spaced frames from video files, with public image links, timestamps and a free contact sheet. | **$0.002** per frame |
+| `download_images` | Download every image from web pages or image links, de-duplicated and filtered, with public download URLs. | **$0.002** per image |
+| `check_domain_authority` | 0-100 domain authority from the open Common Crawl web graph (133M domains): web rank, PageRank rank, top-% percentile and monthly trend. | **$0.001** per domain scored (unranked domains free) |
 | `enrich_company` (coming soon) | Company profile from a domain or name: logo, description, social profiles, app links and key pages, plus industry, HQ, founding year, employees, revenue and ticker from Wikidata. | **$0.003** per company enriched |
 | `upscale_image` (coming soon) | Upscale images 2x or 4x with Real-ESRGAN (photo or anime model), transparency kept, with public download links. | **$0.01** per image ($0.06 per large image with allowLargeImages) |
 | `get_topic_trends` (coming soon) | Interest over time for topics on a shared 0-100 scale (a Google Trends alternative) from official Wikipedia pageviews since 2015: peak, trend, spikes and interest by language. | **$0.003** per topic |
@@ -22,7 +22,7 @@ An [MCP](https://modelcontextprotocol.io) server that gives AI assistants (Claud
 
 Failed or unreachable inputs are **not charged**.
 
-> **Coming soon:** `extract_video_frames`, `download_images`, `check_domain_authority`, `enrich_company`, `upscale_image`, `get_topic_trends`, `get_trending_topics`, `check_website_traffic_rank`, `search_free_images` are listed already, but their actors are not yet public on the Apify Store; until they are, calls to them return an "actor not yet public" error (nothing is charged).
+> **Coming soon:** `enrich_company`, `upscale_image`, `get_topic_trends`, `get_trending_topics`, `check_website_traffic_rank`, `search_free_images` are listed already, but their actors are not yet public on the Apify Store; until they are, calls to them return an "actor not yet public" error (nothing is charged).
 <!-- tools:end -->
 
 ## How billing works
