@@ -34,7 +34,7 @@ Every call carries a spending cap: `maxTotalChargeUsd` (default **$1.00**, chang
 ## Setup
 
 1. Get an Apify API token: sign up at [apify.com](https://apify.com), then **Settings -> API & Integrations** ([console.apify.com/settings/integrations](https://console.apify.com/settings/integrations)).
-2. Add the server to your client (Node.js 18.17+ required; `npx` downloads it on first run).
+2. Add the server to your client (Node.js 18.17+ required; `npx` downloads and builds it from GitHub on first run).
 
 ### Claude Desktop
 
@@ -45,7 +45,7 @@ Edit `claude_desktop_config.json` (Settings -> Developer -> Edit Config):
   "mcpServers": {
     "kanto-labs": {
       "command": "npx",
-      "args": ["-y", "kanto-labs-mcp"],
+      "args": ["-y", "github:kanto-labs/kanto-labs-mcp"],
       "env": { "APIFY_TOKEN": "apify_api_your_token_here" }
     }
   }
@@ -57,7 +57,7 @@ Or install the one-click bundle `kanto-labs-mcp.mcpb` from the [Releases page](h
 ### Claude Code
 
 ```bash
-claude mcp add kanto-labs -e APIFY_TOKEN=apify_api_your_token_here -- npx -y kanto-labs-mcp
+claude mcp add kanto-labs -e APIFY_TOKEN=apify_api_your_token_here -- npx -y github:kanto-labs/kanto-labs-mcp
 ```
 
 ### Cursor
@@ -69,7 +69,7 @@ claude mcp add kanto-labs -e APIFY_TOKEN=apify_api_your_token_here -- npx -y kan
   "mcpServers": {
     "kanto-labs": {
       "command": "npx",
-      "args": ["-y", "kanto-labs-mcp"],
+      "args": ["-y", "github:kanto-labs/kanto-labs-mcp"],
       "env": { "APIFY_TOKEN": "apify_api_your_token_here" }
     }
   }
@@ -89,7 +89,7 @@ claude mcp add kanto-labs -e APIFY_TOKEN=apify_api_your_token_here -- npx -y kan
     "kanto-labs": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "kanto-labs-mcp"],
+      "args": ["-y", "github:kanto-labs/kanto-labs-mcp"],
       "env": { "APIFY_TOKEN": "${input:apify_token}" }
     }
   }
@@ -98,9 +98,9 @@ claude mcp add kanto-labs -e APIFY_TOKEN=apify_api_your_token_here -- npx -y kan
 
 ### Windsurf, Cline, Zed and others
 
-Any client that launches stdio servers works: command `npx`, args `-y kanto-labs-mcp`, env `APIFY_TOKEN`.
+Any client that launches stdio servers works: command `npx`, args `-y github:kanto-labs/kanto-labs-mcp`, env `APIFY_TOKEN`.
 
-> **Windows:** if your client reports `spawn npx ENOENT`, use `"command": "cmd"` with `"args": ["/c", "npx", "-y", "kanto-labs-mcp"]`.
+> **Windows:** if your client reports `spawn npx ENOENT`, use `"command": "cmd"` with `"args": ["/c", "npx", "-y", "github:kanto-labs/kanto-labs-mcp"]`.
 
 ## Example prompts
 

@@ -20,7 +20,8 @@
     "test": "node scripts/sync-meta.mjs --check && node test/smoke.mjs && node test/mock.mjs",
     "test:live": "node test/live.mjs",
     "prepublishOnly": "npm run build",
-    "bundle": "node scripts/bundle.mjs"
+    "bundle": "node scripts/bundle.mjs",
+    "prepare": "npm run build"
   },
   "keywords": [
     "mcp",
