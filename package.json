@@ -1,0 +1,72 @@
+{
+  "name": "kanto-labs-mcp",
+  "version": "1.2.0",
+  "description": "MCP server for Kanto Labs' Apify actors: website tech stack, document-to-Markdown, SEO audit, OCR, domain lookup, domain authority, website traffic rank, company enrichment, topic trends, free image search, AI image upscaling, video frames and bulk image download.",
+  "mcpName": "io.github.kanto-labs/kanto-labs-mcp",
+  "type": "module",
+  "bin": {
+    "kanto-labs-mcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "actors.config.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc && node scripts/sync-meta.mjs",
+    "start": "node dist/index.js",
+    "test": "node scripts/sync-meta.mjs --check && node test/smoke.mjs && node test/mock.mjs",
+    "test:live": "node test/live.mjs",
+    "prepublishOnly": "npm run build",
+    "bundle": "node scripts/bundle.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "apify",
+    "tech-stack",
+    "wappalyzer",
+    "pdf-to-markdown",
+    "document-to-markdown",
+    "seo-audit",
+    "rag",
+    "ocr",
+    "whois",
+    "dns",
+    "ssl",
+    "video-frames",
+    "image-downloader",
+    "domain-authority",
+    "website-traffic",
+    "company-enrichment",
+    "google-trends-alternative",
+    "wikipedia",
+    "free-images",
+    "image-upscaler",
+    "kanto-labs"
+  ],
+  "author": "Kanto Labs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kanto-labs/kanto-labs-mcp.git"
+  },
+  "homepage": "https://github.com/kanto-labs/kanto-labs-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/kanto-labs/kanto-labs-mcp/issues"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@anthropic-ai/mcpb": "^2.1.2",
+    "@types/node": "^22.20.4",
+    "typescript": "^5.9.3"
+  }
+}

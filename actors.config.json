@@ -1,0 +1,836 @@
+{
+  "$comment": "One entry per Apify actor exposed as an MCP tool. To add an actor, append an entry: no code changes needed. Parameter types: string, integer, number, boolean, string[]. 'summary' is a template filled from each result item ({field}, {a,b} = first present field, {field|join} for arrays); items with an 'error' field use 'errorSummary'. Optional: itemNoun (what one result row is, if not the charged unit), chargeCountField (item field holding the number of charged events in that row), itemPriceRules ([{when:{field:value}, priceUsd}], first match sets that row's price), defaults (actor input used when the caller omits a param). Template fields may use dotted paths (ssl.valid); an empty array renders as 'none'. Also optional: comingSoon (true while the actor is still private on the Apify Store: the tool is listed with a COMING SOON notice and a 404 is explained; delete it or set false when the actor is public), fixedInput (actor input always sent, not exposed as a param), shortDescription + priceText (used by scripts/sync-meta.mjs for manifest.json and README.md).",
+  "actors": [
+    {
+      "tool": "detect_website_tech_stack",
+      "title": "Detect website tech stack",
+      "actorId": "kantolabs/website-tech-stack-detector",
+      "chargeEvent": "url-analyzed",
+      "priceUsdPerResult": 0.003,
+      "resultNoun": "website",
+      "description": "Detect the technologies a website runs on: CMS, ecommerce platform, JavaScript frameworks, analytics and ad tags, CDN, hosting, payment and marketing tools (7,600+ fingerprints, with versions and confidence). Use it for lead qualification, competitor research, sales prospecting or 'what is this site built with?' questions. Reads only the public page, one request per site. Cost: $0.003 per website analyzed, billed to your Apify account; failed or unreachable sites are free.",
+      "params": {
+        "urls": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 500,
+          "description": "Domains or full URLs to analyze, e.g. [\"shopify.com\", \"https://example.com/pricing\"]. Duplicates are removed."
+        },
+        "minConfidence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Only report technologies detected with at least this confidence (%). Default 50; 0 returns every weak guess."
+        },
+        "includeDescriptions": {
+          "type": "boolean",
+          "description": "Add a one-paragraph description of each technology (larger output). Default false."
+        }
+      },
+      "countFrom": "urls",
+      "summary": "{domain}: {technologyCount} technologies ({technologyNames|join})",
+      "errorSummary": "{inputUrl,url,domain}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "Detect the technologies a website runs on: CMS, ecommerce, frameworks, analytics, CDN, hosting (7,600+ fingerprints).",
+      "priceText": "$0.003 per website"
+    },
+    {
+      "tool": "convert_document_to_markdown",
+      "title": "Convert document to Markdown",
+      "actorId": "kantolabs/document-to-markdown",
+      "chargeEvent": "document-converted",
+      "priceUsdPerResult": 0.004,
+      "resultNoun": "document",
+      "description": "Download documents from public URLs and convert them to clean Markdown: PDF, DOCX, PPTX, XLSX/XLS, CSV, EPUB, HTML, IPYNB, MSG, TXT, JSON, XML, RSS and ZIP archives of these. Returns the Markdown plus title, page and word counts, and optional heading-aware chunks for RAG / vector databases. Use it when you need to read, summarize, quote or index a document that is only reachable by link. Cost: $0.004 per document converted, billed to your Apify account; unsupported or failed files are free.",
+      "params": {
+        "documentUrls": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 200,
+          "description": "Direct links to documents, e.g. [\"https://arxiv.org/pdf/1706.03762\"]. Links without a file extension work; the type is detected from the file itself."
+        },
+        "chunkSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000,
+          "description": "Split each document into heading-aware chunks of about this many characters for embeddings. Default 0 (no chunking)."
+        },
+        "chunkOverlap": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5000,
+          "description": "Characters repeated between consecutive chunks. Default 150."
+        },
+        "includeMarkdown": {
+          "type": "boolean",
+          "description": "Return the full Markdown text. Default true; set false when only chunks are needed."
+        },
+        "maxFileSizeMb": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500,
+          "description": "Skip (and do not charge) files larger than this. Default 50."
+        }
+      },
+      "countFrom": "documentUrls",
+      "summary": "{title,fileName} ({format}): {pageCount} pages, {wordCount} words",
+      "errorSummary": "{url,inputUrl,finalUrl}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "Convert PDF, DOCX, PPTX, XLSX, EPUB, HTML and more from a URL to Markdown, with page/word counts and optional RAG chunks.",
+      "priceText": "$0.004 per document"
+    },
+    {
+      "tool": "audit_website_seo",
+      "title": "Audit website SEO",
+      "actorId": "kantolabs/website-seo-audit",
+      "chargeEvent": "page-audited",
+      "priceUsdPerResult": 0.004,
+      "resultNoun": "page",
+      "description": "Run an on-page SEO audit: 0-100 score and a prioritized list of issues (title, meta description, headings, canonical, indexability, structured data, Open Graph, images without alt, speed, robots.txt, sitemap, llms.txt and AI-crawler blocking), with optional broken-link checking and an internal crawl. Use it when asked to audit, review or improve a site's SEO, or to compare pages. Cost: $0.004 per page audited, billed to your Apify account; unreachable pages are free. Crawling multiplies cost: pages = urls x maxPagesPerSite at most.",
+      "params": {
+        "urls": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 200,
+          "description": "Pages or domains to audit, e.g. [\"https://www.python.org\"]."
+        },
+        "maxPagesPerSite": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5000,
+          "description": "1 (default) audits only the listed URLs. Higher values crawl internal links up to this many pages per start URL; each page is charged."
+        },
+        "checkBrokenLinks": {
+          "type": "boolean",
+          "description": "Request every link on each audited page and report 4xx/5xx/unreachable ones. Slower. Default false."
+        },
+        "maxLinksToCheckPerPage": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000,
+          "description": "Upper bound on link checks per page when checkBrokenLinks is on. Default 100."
+        }
+      },
+      "countFrom": "urls",
+      "countMultiplier": "maxPagesPerSite",
+      "summary": "{finalUrl,url}: score {score}/100, {issueCount} issues - {title}",
+      "errorSummary": "{url,inputUrl,finalUrl}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "On-page SEO audit: 0-100 score and prioritized issues, robots.txt, sitemap, llms.txt and AI-crawler checks, optional broken links and crawl.",
+      "priceText": "$0.004 per page"
+    },
+    {
+      "tool": "extract_text_from_image",
+      "title": "Extract text from images (OCR)",
+      "actorId": "kantolabs/image-to-text-ocr",
+      "chargeEvent": "page-processed",
+      "priceUsdPerResult": 0.003,
+      "resultNoun": "page",
+      "description": "OCR: extract the text from images, screenshots, photos and scanned PDFs reachable by URL (PNG, JPG, WEBP, TIFF, BMP, GIF, HEIC, PDF). Returns reading-order text per image or PDF page with an average confidence, and optionally every line with its pixel bounding box. Reads English and other Latin-script languages, Chinese and Japanese; PDFs that already contain a text layer are read exactly without OCR. Use it for receipts, invoices, forms, scanned documents, screenshots and product photos when you need the words in the image, not a description of it. For digital (non-scanned) PDFs and Office files prefer convert_document_to_markdown. Cost: $0.003 per image or PDF page read ($0.008 with quality \"accurate\"), billed to your Apify account; failed downloads and pages with no text are free.",
+      "params": {
+        "sources": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 500,
+          "description": "Direct links to images or PDF files, e.g. [\"https://example.com/receipt.jpg\", \"https://example.com/scan.pdf\"]. Each image and each PDF page is one charged result."
+        },
+        "quality": {
+          "type": "string",
+          "enum": [
+            "fast",
+            "accurate"
+          ],
+          "description": "\"fast\" (default, $0.003/page) is right for screenshots, documents and Latin-script text. \"accurate\" ($0.008/page, about 4x slower) is better for Japanese, dense Chinese, stylized fonts and poor photos."
+        },
+        "includeLines": {
+          "type": "boolean",
+          "description": "Also return every text line with its confidence and pixel box [x0, y0, x1, y1] (much larger output; useful for tables or finding a value next to a label). Default false."
+        },
+        "minConfidence": {
+          "type": "string",
+          "enum": [
+            "0.3",
+            "0.4",
+            "0.5",
+            "0.6",
+            "0.7",
+            "0.8"
+          ],
+          "description": "Drop text lines recognized below this confidence. Default \"0.5\"; use \"0.3\" for very poor scans."
+        },
+        "pdfMode": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "ocr"
+          ],
+          "description": "\"auto\" (default) uses a PDF page's own text layer when present and OCRs only scanned pages; \"ocr\" always runs OCR."
+        },
+        "maxPdfPages": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500,
+          "description": "Read only the first N pages of each PDF (each page is charged). Default 50."
+        },
+        "pdfDpi": {
+          "type": "integer",
+          "minimum": 72,
+          "maximum": 400,
+          "description": "Render resolution for scanned PDF pages. Default 200; use 300 for small print."
+        }
+      },
+      "countFrom": "sources",
+      "itemPriceRules": [
+        {
+          "when": {
+            "quality": "accurate",
+            "method": "ocr"
+          },
+          "priceUsd": 0.008
+        }
+      ],
+      "defaults": {
+        "includeLines": false
+      },
+      "summary": "{fileName,sourceUrl} page {page}/{pageCount} ({method}): {charCount} chars, confidence {averageConfidence}",
+      "errorSummary": "{fileName,sourceUrl}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "OCR text from images, screenshots, photos and scanned PDFs, in reading order with confidence and optional line boxes.",
+      "priceText": "$0.003 per image or PDF page ($0.008 with quality \"accurate\")"
+    },
+    {
+      "tool": "lookup_domain",
+      "title": "Look up domain WHOIS, DNS, SSL and email security",
+      "actorId": "kantolabs/domain-whois-dns-ssl-lookup",
+      "chargeEvent": "domain-analyzed",
+      "priceUsdPerResult": 0.003,
+      "resultNoun": "domain",
+      "description": "One report per domain: registration data via RDAP/WHOIS (registered or available, registrar, creation and expiry dates, domain age, status, nameservers, DNSSEC), all DNS records (A, AAAA, MX, NS, TXT, CAA, SOA, www), the SSL certificate (valid, issuer, expiry, days left, SANs, TLS version) and email security (SPF, DKIM, DMARC, MTA-STS, detected email provider, 0-100 score and A-F grade), plus a plain-English list of issues. Accepts domains, URLs or email addresses. Use it for 'who is the registrar / when does it expire / is this domain available / is the certificate valid / who hosts their email / is DMARC set up' questions, lead enrichment and domain or certificate monitoring. No registrant personal data is returned. Cost: $0.003 per domain analyzed, billed to your Apify account; invalid domains and failed lookups are free.",
+      "params": {
+        "domains": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 1000,
+          "description": "Domains, URLs or email addresses, e.g. [\"stripe.com\", \"https://www.shopify.com/pricing\", \"ceo@example.org\"]. Each is reduced to its registrable domain; duplicates are removed."
+        },
+        "includeWhois": {
+          "type": "boolean",
+          "description": "Registration data (RDAP/WHOIS). Default true."
+        },
+        "includeDns": {
+          "type": "boolean",
+          "description": "DNS records. Default true."
+        },
+        "includeSsl": {
+          "type": "boolean",
+          "description": "SSL certificate check on port 443. Default true."
+        },
+        "includeEmailSecurity": {
+          "type": "boolean",
+          "description": "SPF/DKIM/DMARC report with score and grade. Default true."
+        }
+      },
+      "countFrom": "domains",
+      "summary": "{domain}: registered {registered}, registrar {registrar}, created {createdDate}, expires {expiresDate}; SSL valid {ssl.valid} ({ssl.daysUntilExpiry} days left); email {email.emailProvider}, grade {email.grade}; issues: {issues|join}",
+      "errorSummary": "{input,domain}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "Domain RDAP/WHOIS, DNS records, SSL certificate expiry and SPF/DKIM/DMARC email security grade.",
+      "priceText": "$0.003 per domain"
+    },
+    {
+      "tool": "extract_video_frames",
+      "title": "Extract frames from videos",
+      "actorId": "kantolabs/video-frame-extractor",
+      "comingSoon": true,
+      "chargeEvent": "frame-extracted",
+      "priceUsdPerResult": 0.002,
+      "resultNoun": "frame",
+      "itemNoun": "video",
+      "description": "Extract still frames from video files reachable by direct URL (MP4, MOV, WEBM, MKV, AVI, M4V, MPEG-TS; not YouTube or TikTok pages): an automatic storyboard of scene changes, scene cuts only, N evenly spaced frames, or one frame every N seconds. Returns public image URLs with timestamps for every frame, a free contact-sheet grid image, and the video's duration, resolution, fps and codecs. Use it to let a vision model 'watch' a video, to make thumbnails or storyboards, or to find scene changes. A call must finish within 300 seconds, so send one or a few short videos per call. Cost: $0.002 per frame extracted (default 12 frames per video = $0.024), billed to your Apify account; videos that fail to download or decode are free.",
+      "params": {
+        "videoUrls": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 50,
+          "description": "Direct links to video files, e.g. [\"https://media.w3.org/2010/05/sintel/trailer.mp4\"]."
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "scenes",
+            "count",
+            "interval"
+          ],
+          "description": "\"auto\" (default): first frame + strongest scene changes, topped up with evenly spaced frames to frameCount. \"scenes\": only real cuts (up to maxFramesPerVideo). \"count\": exactly frameCount evenly spaced frames. \"interval\": one frame every intervalSeconds (up to maxFramesPerVideo)."
+        },
+        "frameCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200,
+          "description": "Frames per video in auto and count modes. Default 12. Each frame is charged."
+        },
+        "intervalSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600,
+          "description": "Seconds between frames in interval mode. Default 10."
+        },
+        "maxFramesPerVideo": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200,
+          "description": "Upper limit per video in scenes and interval modes. Default 50."
+        },
+        "sceneThreshold": {
+          "type": "string",
+          "enum": [
+            "0.15",
+            "0.2",
+            "0.3",
+            "0.4",
+            "0.5"
+          ],
+          "description": "Scene-change sensitivity (lower finds subtler changes). Default \"0.3\"."
+        },
+        "imageFormat": {
+          "type": "string",
+          "enum": [
+            "jpg",
+            "png",
+            "webp"
+          ],
+          "description": "Frame image format. Default jpg."
+        },
+        "maxWidth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7680,
+          "description": "Scale frames down to this width in px (0 = original). Default 1280, plenty for vision models."
+        },
+        "contactSheet": {
+          "type": "boolean",
+          "description": "Also build one grid image of all frames with timecodes (free). Default true."
+        }
+      },
+      "countFrom": "videoUrls",
+      "countMultiplier": "frameCount",
+      "chargeCountField": "frameCount",
+      "summary": "{fileName,videoUrl}: {frameCount} frames from a {durationSeconds}s {width}x{height} video; contact sheet {contactSheetUrl}",
+      "errorSummary": "{videoUrl,fileName}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "Extract scene-change or evenly spaced frames from video files, with public image links, timestamps and a free contact sheet.",
+      "priceText": "$0.002 per frame"
+    },
+    {
+      "tool": "download_images",
+      "title": "Bulk download images",
+      "actorId": "kantolabs/bulk-image-downloader",
+      "comingSoon": true,
+      "chargeEvent": "image-downloaded",
+      "priceUsdPerResult": 0.002,
+      "resultNoun": "image",
+      "description": "Download every image from web pages (img tags, srcset, lazy-load attributes, CSS backgrounds, optionally favicons and SVGs) and/or from direct image links, with size and format filters, de-duplication and optional conversion or resizing. Each saved image gets a public download URL plus its dimensions, format, alt text and SHA-256. Use it to collect product photos, gallery or article images, or to re-host and convert a list of image links. Only for images you have the right to use; social networks and stock-photo sites are refused. Cost: $0.002 per image saved, billed to your Apify account; duplicates, filtered-out and failed images are free. A page can hold hundreds of images, so set maxImagesPerPage and minWidth to control cost.",
+      "params": {
+        "urls": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 500,
+          "description": "Web page URLs (all images on the page) and/or direct image links, mixed freely, e.g. [\"https://books.toscrape.com/\"]."
+        },
+        "maxImagesPerPage": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5000,
+          "description": "Stop after this many images from one page. Default 200."
+        },
+        "minWidth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000,
+          "description": "Skip (free) images narrower than this in px. 200+ drops icons, avatars and thumbnails. Default 0."
+        },
+        "minHeight": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000,
+          "description": "Skip (free) images shorter than this in px. Default 0."
+        },
+        "minFileSizeKb": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "description": "Skip (free) files smaller than this. Default 2, which removes tracking pixels."
+        },
+        "allowedFormats": {
+          "type": "string[]",
+          "enum": [
+            "jpg",
+            "png",
+            "webp",
+            "gif",
+            "avif",
+            "bmp",
+            "tiff",
+            "ico",
+            "heic"
+          ],
+          "description": "Keep only these formats. Omit to keep all raster formats."
+        },
+        "includeSvg": {
+          "type": "boolean",
+          "description": "Also save SVG files (logos, icons). Default false."
+        },
+        "includeCssBackgrounds": {
+          "type": "boolean",
+          "description": "Also collect CSS background images (hero banners, sliders). Default true."
+        },
+        "includeIcons": {
+          "type": "boolean",
+          "description": "Also collect favicons and touch icons. Default false."
+        },
+        "convertTo": {
+          "type": "string",
+          "enum": [
+            "original",
+            "jpg",
+            "png",
+            "webp"
+          ],
+          "description": "Keep original files (default) or convert every image to one format."
+        },
+        "maxDimension": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000,
+          "description": "Downscale images whose longest side exceeds this in px. 0 (default) keeps the original size."
+        },
+        "dedupe": {
+          "type": "boolean",
+          "description": "Save (and charge) the same picture found at several URLs only once. Default true."
+        }
+      },
+      "countFrom": "urls",
+      "countMultiplier": "maxImagesPerPage",
+      "summary": "{fileName,imageUrl}: {width}x{height} {format}, {bytes} bytes - {fileUrl}",
+      "errorSummary": "{imageUrl,pageUrl}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "Download every image from web pages or image links, de-duplicated and filtered, with public download URLs.",
+      "priceText": "$0.002 per image"
+    },
+    {
+      "tool": "check_domain_authority",
+      "title": "Check domain authority",
+      "actorId": "kantolabs/domain-authority-checker",
+      "comingSoon": true,
+      "chargeEvent": "domain-scored",
+      "priceUsdPerResult": 0.001,
+      "resultNoun": "domain",
+      "description": "Score how authoritative (well linked) domains are: a 0-100 authority score computed from the open Common Crawl domain web graph of about 133 million domains, with the harmonic-centrality rank, PageRank rank, top-% percentile, number of subdomains seen, and the rank change and trend (up/down/stable/new) against the previous monthly graph. Accepts domains, URLs or email addresses; each is reduced to its registrable domain. Use it for link-building and outreach prospect lists, guest-post or PR vetting, expired-domain research, lead scoring and competitor tracking. It is its own open metric, NOT Moz Domain Authority or Ahrefs Domain Rating: compare domains against each other. It does not return backlinks and visits no website. Domains outside the top 12 million come back with ranked=false (score below 20) and are free. Thousands of domains finish in seconds. Cost: $0.001 per domain scored, billed to your Apify account; unranked and invalid domains are free.",
+      "params": {
+        "domains": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 10000,
+          "description": "Domains, URLs or email addresses, e.g. [\"stripe.com\", \"https://www.nytimes.com/section/world\", \"ceo@shopify.com\"]. Reduced to the registrable domain; duplicates are removed."
+        }
+      },
+      "countFrom": "domains",
+      "itemPriceRules": [
+        {
+          "when": {
+            "ranked": false
+          },
+          "priceUsd": 0
+        }
+      ],
+      "summary": "{domain,input}: ranked {ranked}, authority {authorityScore}/100 ({authorityTier}), web rank {harmonicCentralityRank}, top {topPercent}%, trend {trend}",
+      "errorSummary": "{input}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "0-100 domain authority from the open Common Crawl web graph (133M domains): web rank, PageRank rank, top-% percentile and monthly trend.",
+      "priceText": "$0.001 per domain scored (unranked domains free)"
+    },
+    {
+      "tool": "enrich_company",
+      "title": "Enrich company profiles",
+      "actorId": "kantolabs/company-enrichment",
+      "comingSoon": true,
+      "chargeEvent": "company-enriched",
+      "priceUsdPerResult": 0.003,
+      "resultNoun": "company",
+      "description": "Turn domains, website URLs, email addresses or company names into company profiles. From one normal visit to the company's homepage: name, description, logo and favicon URLs, brand colour, language, the company's own social profile links (LinkedIn, X, Facebook, Instagram, YouTube, GitHub...), App Store / Google Play links and key pages (about, pricing, careers, contact, blog, docs). From Wikidata (open data): industries, country, headquarters, founding date, employee count and revenue (with the year of each figure), stock tickers, parent organization, legal form and LEI. Use it for CRM or lead-list enrichment, account research before a sales call, logo walls, market maps, or 'tell me about this company' questions. Names are matched on Wikidata (well-known organizations only); pass a domain for an exact match. Small businesses usually get the website fields only. Returns no personal data (no people, emails or phone numbers). Cost: $0.003 per company enriched, billed to your Apify account; unreachable domains, unknown names and invalid inputs are free.",
+      "params": {
+        "companies": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 500,
+          "description": "One company per item: a domain (\"stripe.com\"), a website URL, an email address or a company name (\"Siemens\"). Duplicates are removed."
+        },
+        "includeWebsite": {
+          "type": "boolean",
+          "description": "Read the company's homepage (logo, socials, apps, key pages). Default true."
+        },
+        "includeWikidata": {
+          "type": "boolean",
+          "description": "Firmographics from Wikidata (industry, HQ, founded, employees, revenue, ticker). Default true."
+        },
+        "maxConcurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30,
+          "description": "Companies processed in parallel. Default 10."
+        }
+      },
+      "countFrom": "companies",
+      "summary": "{name,input} ({domain}): {industries|join}; HQ {headquarters}, {country}; founded {founded}; employees {employees}; logo {logoUrl}",
+      "errorSummary": "{input,domain}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "Company profile from a domain or name: logo, description, social profiles, app links and key pages, plus industry, HQ, founding year, employees, revenue and ticker from Wikidata.",
+      "priceText": "$0.003 per company enriched"
+    },
+    {
+      "tool": "upscale_image",
+      "title": "Upscale images with AI",
+      "actorId": "kantolabs/ai-image-upscaler",
+      "comingSoon": true,
+      "chargeEvent": "image-upscaled",
+      "priceUsdPerResult": 0.01,
+      "resultNoun": "image",
+      "description": "Enlarge images 2x or 4x with Real-ESRGAN, the open-source AI super-resolution model, run inside the actor (no third-party AI API): sharper edges and textures, less blur and JPEG noise than a normal resize. Two models: \"general\" for photos, product shots, screenshots and scans; \"anime\" for anime, cartoons, illustrations, logos and line art. Transparency is kept. Returns a public download URL for each upscaled file with input and output dimensions. Use it to make small product photos, thumbnails or artwork print- or store-ready, or to enlarge small text before OCR. Inputs up to about 0.3 megapixels (640x480) are standard price (output up to 2560x1920 at 4x); bigger inputs are reduced to that size unless allowLargeImages is true, which upscales inputs up to about 2.1 MP (1920x1080) at full size at the large price. Upscaling takes about 12 s per standard image and about 80 s per large one, and a call must finish within 300 s, so send at most about 15 standard or 3 large images per call. Only images you have the right to process; social-network and stock-photo links are refused. Cost: $0.01 per image upscaled, $0.06 per large image, billed to your Apify account; failed or refused images are free.",
+      "params": {
+        "imageUrls": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 20,
+          "description": "Direct links to images (JPEG, PNG, WEBP, GIF first frame, BMP, TIFF; up to 40 MB), e.g. [\"https://example.com/product-small.jpg\"]."
+        },
+        "scale": {
+          "type": "string",
+          "enum": [
+            "4",
+            "2"
+          ],
+          "description": "Upscale factor, \"4\" (default) or \"2\". Same price."
+        },
+        "model": {
+          "type": "string",
+          "enum": [
+            "general",
+            "anime"
+          ],
+          "description": "\"general\" (default) for photos and real-world images; \"anime\" for anime, cartoons, illustrations and line art."
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "jpeg",
+            "png",
+            "webp"
+          ],
+          "description": "\"jpeg\" (default, smallest for photos), \"png\" (lossless, keeps transparency) or \"webp\" (small, keeps transparency)."
+        },
+        "quality": {
+          "type": "integer",
+          "minimum": 50,
+          "maximum": 100,
+          "description": "JPEG / WEBP quality. Default 95."
+        },
+        "allowLargeImages": {
+          "type": "boolean",
+          "description": "Upscale inputs up to ~2.1 MP at full size and charge the large price ($0.06). Default false: bigger inputs are first reduced to ~0.3 MP and charged $0.01."
+        }
+      },
+      "countFrom": "imageUrls",
+      "itemPriceRules": [
+        {
+          "when": {
+            "chargedAs": "large-image-upscaled"
+          },
+          "priceUsd": 0.06
+        }
+      ],
+      "summary": "{imageUrl}: {width}x{height} -> {outputWidth}x{outputHeight} ({model}, {chargedAs}) {outputUrl}",
+      "errorSummary": "{imageUrl}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "Upscale images 2x or 4x with Real-ESRGAN (photo or anime model), transparency kept, with public download links.",
+      "priceText": "$0.01 per image ($0.06 per large image with allowLargeImages)"
+    },
+    {
+      "tool": "get_topic_trends",
+      "title": "Get topic interest over time",
+      "actorId": "kantolabs/wikipedia-trends",
+      "comingSoon": true,
+      "chargeEvent": "topic-analyzed",
+      "priceUsdPerResult": 0.003,
+      "resultNoun": "topic",
+      "fixedInput": {
+        "mode": "topics"
+      },
+      "description": "Measure and compare interest in topics over time, like Google Trends, from official Wikipedia pageview data (human traffic, 2015-07-01 to yesterday, CC0). Each keyword is matched to one Wikipedia article (exact title first, else the top non-disambiguation search hit; the matched article is returned so you can check it; write \"Apple Inc.\" for the company, \"apple\" gives the fruit). Per topic: a daily, weekly or monthly timeline with absolute views and a 0-100 value normalised across all keywords of the call, total and average views, peak date, latest value, change percent and trend (rising/stable/falling), spike days, and interest by language edition. Use it for 'is interest in X growing?', comparing brands, products, people or technologies, seasonality, or finding the day a story broke. It counts people reading about a topic, not Google searches, and has no per-city data. About 5-10 s for 3 keywords and about a minute for 10 keywords over 12 months, so send up to about 30 keywords per call. Cost: $0.003 per topic analyzed, billed to your Apify account; keywords with no matching article are free.",
+      "params": {
+        "keywords": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 50,
+          "description": "Topics to compare on one scale: keywords (\"bitcoin\"), exact article titles (\"Apple Inc.\") or Wikipedia URLs."
+        },
+        "language": {
+          "type": "string",
+          "description": "Wikipedia language edition used to match keywords: en (default), de, fr, es, ja, pt, it, ru, zh, pl, nl, ko..."
+        },
+        "timeRange": {
+          "type": "string",
+          "enum": [
+            "past7Days",
+            "past30Days",
+            "past90Days",
+            "past12Months",
+            "past5Years",
+            "all",
+            "custom"
+          ],
+          "description": "Period to analyse. Default past90Days. \"all\" = 2015-07-01 to yesterday. Ignored when startDate or endDate is set."
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Custom start date, YYYY-MM-DD (earliest 2015-07-01)."
+        },
+        "endDate": {
+          "type": "string",
+          "description": "Custom end date, YYYY-MM-DD. Default yesterday (UTC)."
+        },
+        "granularity": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "daily",
+            "weekly",
+            "monthly"
+          ],
+          "description": "Timeline resolution. \"auto\" (default) = daily up to 3 months, weekly up to about 2 years, monthly beyond."
+        },
+        "includeRedirects": {
+          "type": "boolean",
+          "description": "Add views of titles that redirect to the article (old names, spellings) so a renamed topic does not start from zero. Default true."
+        },
+        "includeLanguages": {
+          "type": "boolean",
+          "description": "Add interest by language edition. Default true; false is faster."
+        },
+        "maxLanguages": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30,
+          "description": "How many of the largest language editions to include. Default 10."
+        },
+        "platform": {
+          "type": "string",
+          "enum": [
+            "all-access",
+            "desktop",
+            "mobile-web",
+            "mobile-app"
+          ],
+          "description": "Devices counted. Default all-access."
+        }
+      },
+      "countFrom": "keywords",
+      "summary": "{keyword} -> {article}: interest {interestScore}/100, {totalViews} views ({startDate} to {endDate}), trend {trend} ({changePercent}%), peak {peakDate}",
+      "errorSummary": "{keyword}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "Interest over time for topics on a shared 0-100 scale (a Google Trends alternative) from official Wikipedia pageviews since 2015: peak, trend, spikes and interest by language.",
+      "priceText": "$0.003 per topic"
+    },
+    {
+      "tool": "get_trending_topics",
+      "title": "Get trending topics",
+      "actorId": "kantolabs/wikipedia-trends",
+      "comingSoon": true,
+      "chargeEvent": "trending-article",
+      "priceUsdPerResult": 0.0005,
+      "resultNoun": "trending article",
+      "fixedInput": {
+        "mode": "trending"
+      },
+      "description": "List what people are reading about on a given day: the most-read Wikipedia articles per country (US, GB, IN, DE, JP... readers in that country; views rounded up to the nearest 100 by Wikimedia) and/or per language edition (exact views), with rank, views and a one-line description. Main pages, search and special pages are removed. Data comes from the official Wikimedia Pageviews API (CC0) and is published about one day later, so the default day is the latest published one (usually yesterday). Use it for news and social monitoring, content ideas, or 'what is trending in Japan today?'. If neither trendingCountries nor trendingProjects is given, the English edition is listed. Cost: $0.0005 per trending article returned, billed to your Apify account; lists that fail or have no data yet are free.",
+      "params": {
+        "trendingCountries": {
+          "type": "string[]",
+          "minItems": 1,
+          "maxItems": 40,
+          "description": "Two-letter country codes, e.g. [\"US\", \"GB\", \"IN\"]."
+        },
+        "trendingProjects": {
+          "type": "string[]",
+          "minItems": 1,
+          "maxItems": 40,
+          "description": "Wikipedia language editions, e.g. [\"en\", \"de\", \"ja\"]."
+        },
+        "trendingDate": {
+          "type": "string",
+          "description": "Day to list, YYYY-MM-DD. Default: the latest published day."
+        },
+        "maxTrending": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500,
+          "description": "Articles per list. Default 25. Each is charged."
+        },
+        "platform": {
+          "type": "string",
+          "enum": [
+            "all-access",
+            "desktop",
+            "mobile-web",
+            "mobile-app"
+          ],
+          "description": "Devices counted. Default all-access."
+        }
+      },
+      "countFrom": "trendingCountries",
+      "countMultiplier": "maxTrending",
+      "summary": "{list} #{rank} ({date}): {article} - {views,viewsRoundedUp} views - {description}",
+      "errorSummary": "{list}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "The most-read topics of a day per country or Wikipedia language edition, with views and a one-line description.",
+      "priceText": "$0.0005 per trending article"
+    },
+    {
+      "tool": "check_website_traffic_rank",
+      "title": "Check website traffic rank",
+      "actorId": "kantolabs/website-traffic-rank",
+      "comingSoon": true,
+      "chargeEvent": "domain-ranked",
+      "priceUsdPerResult": 0.002,
+      "resultNoun": "domain",
+      "description": "How popular is a website, worldwide and by country? From published open data (Chrome UX Report popularity ranks, CC BY 4.0, and the Majestic Million, CC BY 3.0): the global Chrome popularity tier (top 1K, 5K, 10K, 50K, 100K, 500K or 1M websites), month-over-month trend, the countries where the site ranks best and its tier in each of 40 countries, plus Majestic rank, referring subnets and IPs (a backlink-strength signal) and an overall popularityTier. Use it for lead scoring, competitor and market research, vetting publishers, affiliates or link-building targets, and market sizing by country. It gives tiers, not exact positions or monthly visit counts, and does not visit the websites. Sites below the top 1M everywhere and not in the Majestic Million come back ranked=false and are free. Cost: $0.002 per domain ranked, billed to your Apify account; unranked and invalid domains are free.",
+      "params": {
+        "domains": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 10000,
+          "description": "Domains, URLs or subdomains, e.g. [\"canva.com\", \"https://www.zalando.de/\", \"shop.lego.com\"]. A subdomain is judged on its own, then falls back to the main site."
+        },
+        "includeCountries": {
+          "type": "boolean",
+          "description": "Add the full per-country tier list (countryRanks). topCountries is always included. Default true."
+        }
+      },
+      "countFrom": "domains",
+      "itemPriceRules": [
+        {
+          "when": {
+            "ranked": false
+          },
+          "priceUsd": 0
+        }
+      ],
+      "summary": "{host,domain,input}: {popularityTier}, Chrome {chromeRankLabel} worldwide ({chromeTrend}), top countries {topCountries|join}, Majestic rank {majesticRank}, {referringSubnets} referring subnets",
+      "errorSummary": "{input}: failed ({error})",
+      "omitFields": [],
+      "shortDescription": "Website popularity from real Chrome user data (CrUX): global rank tier, tier in 40 countries, top countries and monthly trend, plus Majestic rank and referring subnets.",
+      "priceText": "$0.002 per domain ranked (unranked domains free)"
+    },
+    {
+      "tool": "search_free_images",
+      "title": "Search free-to-use images",
+      "actorId": "kantolabs/free-image-search",
+      "comingSoon": true,
+      "chargeEvent": "image-found",
+      "priceUsdPerResult": 0.001,
+      "resultNoun": "image",
+      "description": "Find pictures you may legally reuse: searches the 100M+ freely licensed files on Wikimedia Commons through the official MediaWiki API and returns only images under free licenses that allow commercial use (public domain, CC0, CC BY, CC BY-SA...). Each image comes with the full-size original URL, a thumbnail URL, the file page, width, height, orientation, license, license family, whether attribution or share-alike is required, the author, a ready-to-paste attribution line (text and HTML), community quality marks and any extra restrictions (trademarks, personality rights). Filter by license (\"noAttribution\" = public domain/CC0 only, \"commercialNoShareAlike\" = PD/CC0/CC BY), minimum size, orientation and file type. Use it for article featured images, product or slide visuals, maps, flags, diagrams, historical photos and licensed image datasets. Works best for concrete subjects (animals, food, places, objects, events); abstract stock concepts return fewer matches, so search for the concrete scene. Not legal advice: follow each image's license. Cost: $0.001 per image returned, billed to your Apify account; filters apply before charging and a search with no match is free.",
+      "params": {
+        "queries": {
+          "type": "string[]",
+          "required": true,
+          "minItems": 1,
+          "maxItems": 50,
+          "description": "Search terms, one per item, e.g. [\"golden retriever puppy\", \"tokyo skyline night\"]. English works best."
+        },
+        "maxResultsPerQuery": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500,
+          "description": "Images per search after filters. Default 20. Each is charged."
+        },
+        "license": {
+          "type": "string",
+          "enum": [
+            "any",
+            "commercialNoShareAlike",
+            "noAttribution"
+          ],
+          "description": "\"any\" (default): every free license. \"commercialNoShareAlike\": public domain, CC0 and CC BY only. \"noAttribution\": public domain and CC0 only (no credit needed)."
+        },
+        "minWidth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000,
+          "description": "Minimum width in px. Default 0 (any)."
+        },
+        "minHeight": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000,
+          "description": "Minimum height in px. Default 0 (any)."
+        },
+        "orientation": {
+          "type": "string",
+          "enum": [
+            "any",
+            "landscape",
+            "portrait",
+            "square"
+          ],
+          "description": "Default any."
+        },
+        "fileTypes": {
+          "type": "string[]",
+          "enum": [
+            "jpg",
+            "png",
+            "webp",
+            "gif",
+            "svg",
+            "tiff"
+          ],
+          "description": "Formats to include. Default [\"jpg\", \"png\", \"webp\"]; use [\"svg\"] for maps, flags, icons and diagrams."
+        },
+        "thumbnailWidth": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 4000,
+          "description": "Width of thumbnailUrl in px. Default 800. imageUrl is always the full original."
+        },
+        "excludeRestricted": {
+          "type": "boolean",
+          "description": "Skip files with trademark, personality-rights or insignia restrictions (recommended for ads). Default false."
+        },
+        "language": {
+          "type": "string",
+          "description": "Preferred language for titles and descriptions, e.g. en (default), de, fr, ja."
+        }
+      },
+      "countFrom": "queries",
+      "countMultiplier": "maxResultsPerQuery",
+      "summary": "{query} #{rank}: {title} {width}x{height}, {license} by {author} - {imageUrl}",
+      "errorSummary": "{query}: {error} (free)",
+      "omitFields": [],
+      "shortDescription": "Search freely licensed images on Wikimedia Commons, with license, author and a ready-to-paste attribution line; filter by license, size, orientation and format.",
+      "priceText": "$0.001 per image"
+    }
+  ]
+}

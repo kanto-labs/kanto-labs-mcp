@@ -1,0 +1,138 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/mcpb/main/dist/mcpb-manifest-v0.3.schema.json",
+  "manifest_version": "0.3",
+  "name": "kanto-labs-mcp",
+  "display_name": "Kanto Labs",
+  "version": "1.2.0",
+  "description": "Web data, SEO, domain authority, traffic rank, company enrichment, topic trends, OCR, documents and images via Kanto Labs' Apify actors.",
+  "long_description": "14 tools backed by Kanto Labs' pay-per-event actors on Apify. detect_website_tech_stack ($0.003 per website): Detect the technologies a website runs on: CMS, ecommerce, frameworks, analytics, CDN, hosting (7,600+ fingerprints). convert_document_to_markdown ($0.004 per document): Convert PDF, DOCX, PPTX, XLSX, EPUB, HTML and more from a URL to Markdown, with page/word counts and optional RAG chunks. audit_website_seo ($0.004 per page): On-page SEO audit: 0-100 score and prioritized issues, robots.txt, sitemap, llms.txt and AI-crawler checks, optional broken links and crawl. extract_text_from_image ($0.003 per image or PDF page ($0.008 with quality \"accurate\")): OCR text from images, screenshots, photos and scanned PDFs, in reading order with confidence and optional line boxes. lookup_domain ($0.003 per domain): Domain RDAP/WHOIS, DNS records, SSL certificate expiry and SPF/DKIM/DMARC email security grade. extract_video_frames ($0.002 per frame, coming soon): Extract scene-change or evenly spaced frames from video files, with public image links, timestamps and a free contact sheet. download_images ($0.002 per image, coming soon): Download every image from web pages or image links, de-duplicated and filtered, with public download URLs. check_domain_authority ($0.001 per domain scored (unranked domains free), coming soon): 0-100 domain authority from the open Common Crawl web graph (133M domains): web rank, PageRank rank, top-% percentile and monthly trend. enrich_company ($0.003 per company enriched, coming soon): Company profile from a domain or name: logo, description, social profiles, app links and key pages, plus industry, HQ, founding year, employees, revenue and ticker from Wikidata. upscale_image ($0.01 per image ($0.06 per large image with allowLargeImages), coming soon): Upscale images 2x or 4x with Real-ESRGAN (photo or anime model), transparency kept, with public download links. get_topic_trends ($0.003 per topic, coming soon): Interest over time for topics on a shared 0-100 scale (a Google Trends alternative) from official Wikipedia pageviews since 2015: peak, trend, spikes and interest by language. get_trending_topics ($0.0005 per trending article, coming soon): The most-read topics of a day per country or Wikipedia language edition, with views and a one-line description. check_website_traffic_rank ($0.002 per domain ranked (unranked domains free), coming soon): Website popularity from real Chrome user data (CrUX): global rank tier, tier in 40 countries, top countries and monthly trend, plus Majestic rank and referring subnets. search_free_images ($0.001 per image, coming soon): Search freely licensed images on Wikimedia Commons, with license, author and a ready-to-paste attribution line; filter by license, size, orientation and format. Runs are billed to your own Apify account; failures are free and every call has a spending cap. Tools marked coming soon call actors that are not public on the Apify Store yet; until they are, they return a clear error and nothing is charged.",
+  "author": {
+    "name": "Kanto Labs",
+    "url": "https://apify.com/kantolabs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kanto-labs/kanto-labs-mcp"
+  },
+  "homepage": "https://github.com/kanto-labs/kanto-labs-mcp",
+  "support": "https://github.com/kanto-labs/kanto-labs-mcp/issues",
+  "license": "MIT",
+  "keywords": [
+    "apify",
+    "tech-stack",
+    "pdf",
+    "markdown",
+    "seo",
+    "rag",
+    "ocr",
+    "whois",
+    "dns",
+    "video",
+    "images",
+    "domain-authority",
+    "traffic",
+    "company",
+    "trends",
+    "upscale"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/dist/index.js"
+      ],
+      "env": {
+        "APIFY_TOKEN": "${user_config.apify_token}",
+        "KANTO_MAX_CHARGE_USD": "${user_config.max_charge_usd}"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "detect_website_tech_stack",
+      "description": "Detect the technologies a website runs on: CMS, ecommerce, frameworks, analytics, CDN, hosting (7,600+ fingerprints). $0.003 per website."
+    },
+    {
+      "name": "convert_document_to_markdown",
+      "description": "Convert PDF, DOCX, PPTX, XLSX, EPUB, HTML and more from a URL to Markdown, with page/word counts and optional RAG chunks. $0.004 per document."
+    },
+    {
+      "name": "audit_website_seo",
+      "description": "On-page SEO audit: 0-100 score and prioritized issues, robots.txt, sitemap, llms.txt and AI-crawler checks, optional broken links and crawl. $0.004 per page."
+    },
+    {
+      "name": "extract_text_from_image",
+      "description": "OCR text from images, screenshots, photos and scanned PDFs, in reading order with confidence and optional line boxes. $0.003 per image or PDF page ($0.008 with quality \"accurate\")."
+    },
+    {
+      "name": "lookup_domain",
+      "description": "Domain RDAP/WHOIS, DNS records, SSL certificate expiry and SPF/DKIM/DMARC email security grade. $0.003 per domain."
+    },
+    {
+      "name": "extract_video_frames",
+      "description": "Extract scene-change or evenly spaced frames from video files, with public image links, timestamps and a free contact sheet. $0.002 per frame. (Coming soon.)"
+    },
+    {
+      "name": "download_images",
+      "description": "Download every image from web pages or image links, de-duplicated and filtered, with public download URLs. $0.002 per image. (Coming soon.)"
+    },
+    {
+      "name": "check_domain_authority",
+      "description": "0-100 domain authority from the open Common Crawl web graph (133M domains): web rank, PageRank rank, top-% percentile and monthly trend. $0.001 per domain scored (unranked domains free). (Coming soon.)"
+    },
+    {
+      "name": "enrich_company",
+      "description": "Company profile from a domain or name: logo, description, social profiles, app links and key pages, plus industry, HQ, founding year, employees, revenue and ticker from Wikidata. $0.003 per company enriched. (Coming soon.)"
+    },
+    {
+      "name": "upscale_image",
+      "description": "Upscale images 2x or 4x with Real-ESRGAN (photo or anime model), transparency kept, with public download links. $0.01 per image ($0.06 per large image with allowLargeImages). (Coming soon.)"
+    },
+    {
+      "name": "get_topic_trends",
+      "description": "Interest over time for topics on a shared 0-100 scale (a Google Trends alternative) from official Wikipedia pageviews since 2015: peak, trend, spikes and interest by language. $0.003 per topic. (Coming soon.)"
+    },
+    {
+      "name": "get_trending_topics",
+      "description": "The most-read topics of a day per country or Wikipedia language edition, with views and a one-line description. $0.0005 per trending article. (Coming soon.)"
+    },
+    {
+      "name": "check_website_traffic_rank",
+      "description": "Website popularity from real Chrome user data (CrUX): global rank tier, tier in 40 countries, top countries and monthly trend, plus Majestic rank and referring subnets. $0.002 per domain ranked (unranked domains free). (Coming soon.)"
+    },
+    {
+      "name": "search_free_images",
+      "description": "Search freely licensed images on Wikimedia Commons, with license, author and a ready-to-paste attribution line; filter by license, size, orientation and format. $0.001 per image. (Coming soon.)"
+    }
+  ],
+  "user_config": {
+    "apify_token": {
+      "type": "string",
+      "title": "Apify API token",
+      "description": "From console.apify.com/settings/integrations. Actor runs are billed to this account.",
+      "sensitive": true,
+      "required": true
+    },
+    "max_charge_usd": {
+      "type": "number",
+      "title": "Spending cap per call (USD)",
+      "description": "Apify stops a run once it has charged this much.",
+      "default": 1,
+      "min": 0.01,
+      "max": 100,
+      "required": false
+    }
+  },
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
+    "runtimes": {
+      "node": ">=18.17.0"
+    }
+  }
+}

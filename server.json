@@ -1,0 +1,38 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.kanto-labs/kanto-labs-mcp",
+  "title": "Kanto Labs",
+  "description": "Web data, SEO, domain, company, trends, OCR, document and image tools for AI assistants via Apify.",
+  "repository": {
+    "url": "https://github.com/kanto-labs/kanto-labs-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://apify.com/kantolabs",
+  "version": "1.2.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "kanto-labs-mcp",
+      "version": "1.2.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "APIFY_TOKEN",
+          "description": "Your Apify API token (console.apify.com/settings/integrations). Actor runs are billed to this account.",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "KANTO_MAX_CHARGE_USD",
+          "description": "Default spending cap per tool call in USD, enforced by Apify (default 1.00).",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "number"
+        }
+      ]
+    }
+  ]
+}
