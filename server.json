@@ -11,10 +11,9 @@
   "version": "1.2.0",
   "packages": [
     {
-      "registryType": "npm",
-      "registryBaseUrl": "https://registry.npmjs.org",
-      "identifier": "kanto-labs-mcp",
-      "version": "1.2.0",
+      "registryType": "mcpb",
+      "identifier": "https://github.com/kanto-labs/kanto-labs-mcp/releases/download/v1.2.0/kanto-labs-mcp.mcpb",
+      "fileSha256": "62c70be545f2dd14a992d5a285be8ea7a1db7cdb37b2a74345ec20d7d47568a8",
       "transport": {
         "type": "stdio"
       },
