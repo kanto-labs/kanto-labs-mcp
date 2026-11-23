@@ -1,4 +1,4 @@
-// Live test: one tiny real call per tool. Costs about $0.07 on the token's Apify account for all of them.
+// Live test: one tiny real call per tool. Costs about $0.05 on the token's Apify account for all of them.
 // Pass tool names (comma-separated) as the first argument to run only those. Tools marked comingSoon in
 // actors.config.json are skipped unless named explicitly (their actors are still private).
 // Token comes from APIFY_TOKEN, or from the file named by APIFY_TOKEN_FILE. It is never printed.
@@ -17,20 +17,12 @@ await client.connect(new StdioClientTransport({
 }));
 
 const calls = [
-  ["detect_website_tech_stack", { urls: ["https://www.shopify.com"], maxTotalChargeUsd: 0.05 }],
-  ["convert_document_to_markdown", { documentUrls: ["https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"], maxTotalChargeUsd: 0.05 }],
-  ["audit_website_seo", { urls: ["https://www.python.org"], maxPagesPerSite: 1, maxTotalChargeUsd: 0.05 }],
-  ["extract_text_from_image", { sources: ["https://raw.githubusercontent.com/tesseract-ocr/tessdoc/main/images/eurotext.png"], maxTotalChargeUsd: 0.05 }],
-  ["lookup_domain", { domains: ["apify.com"], maxTotalChargeUsd: 0.05 }],
   ["extract_video_frames", { videoUrls: ["https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4"], mode: "count", frameCount: 4, maxTotalChargeUsd: 0.05 }],
-  ["download_images", { urls: ["https://books.toscrape.com/"], maxImagesPerPage: 3, maxTotalChargeUsd: 0.05 }],
-  ["check_domain_authority", { domains: ["apify.com", "github.com"], maxTotalChargeUsd: 0.05 }],
-  ["enrich_company", { companies: ["hubspot.com"], maxTotalChargeUsd: 0.05 }],
+  ["video_to_llm_context", { videoUrls: ["https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4"], maxKeyframes: 3, maxTotalChargeUsd: 0.05 }],
+  ["detect_video_scenes", { videoUrls: ["https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4"], maxTotalChargeUsd: 0.05 }],
   ["upscale_image", { imageUrls: ["https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fronalpstock_big.jpg/330px-Fronalpstock_big.jpg"], scale: "2", maxTotalChargeUsd: 0.05 }],
-  ["get_topic_trends", { keywords: ["Bitcoin"], timeRange: "past30Days", includeLanguages: false, maxTotalChargeUsd: 0.05 }],
-  ["get_trending_topics", { trendingCountries: ["US"], maxTrending: 3, maxTotalChargeUsd: 0.05 }],
-  ["check_website_traffic_rank", { domains: ["apify.com"], includeCountries: false, maxTotalChargeUsd: 0.05 }],
-  ["search_free_images", { queries: ["coffee cup"], maxResultsPerQuery: 3, maxTotalChargeUsd: 0.05 }],
+  ["transcribe_douyin_videos", { videoUrls: ["https://www.douyin.com/video/7681665941524877011"], maxTotalChargeUsd: 0.05 }],
+  ["search_1688_products", { keywords: ["phone case"], maxItemsPerKeyword: 3, maxTotalChargeUsd: 0.05 }],
 ];
 const soon = new Set(JSON.parse(readFileSync(new URL("../actors.config.json", import.meta.url), "utf8")).actors
   .filter((a) => a.comingSoon).map((a) => a.tool));

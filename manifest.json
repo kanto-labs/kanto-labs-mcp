@@ -3,9 +3,9 @@
   "manifest_version": "0.3",
   "name": "kanto-labs-mcp",
   "display_name": "Kanto Labs",
-  "version": "1.2.0",
-  "description": "Web data, SEO, domain authority, traffic rank, company enrichment, topic trends, OCR, documents and images via Kanto Labs' Apify actors.",
-  "long_description": "14 tools backed by Kanto Labs' pay-per-event actors on Apify. detect_website_tech_stack ($0.003 per website): Detect the technologies a website runs on: CMS, ecommerce, frameworks, analytics, CDN, hosting (7,600+ fingerprints). convert_document_to_markdown ($0.004 per document): Convert PDF, DOCX, PPTX, XLSX, EPUB, HTML and more from a URL to Markdown, with page/word counts and optional RAG chunks. audit_website_seo ($0.004 per page): On-page SEO audit: 0-100 score and prioritized issues, robots.txt, sitemap, llms.txt and AI-crawler checks, optional broken links and crawl. extract_text_from_image ($0.003 per image or PDF page ($0.008 with quality \"accurate\")): OCR text from images, screenshots, photos and scanned PDFs, in reading order with confidence and optional line boxes. lookup_domain ($0.003 per domain): Domain RDAP/WHOIS, DNS records, SSL certificate expiry and SPF/DKIM/DMARC email security grade. extract_video_frames ($0.002 per frame): Extract scene-change or evenly spaced frames from video files, with public image links, timestamps and a free contact sheet. download_images ($0.002 per image): Download every image from web pages or image links, de-duplicated and filtered, with public download URLs. check_domain_authority ($0.001 per domain scored (unranked domains free)): 0-100 domain authority from the open Common Crawl web graph (133M domains): web rank, PageRank rank, top-% percentile and monthly trend. enrich_company ($0.003 per company enriched): Company profile from a domain or name: logo, description, social profiles, app links and key pages, plus industry, HQ, founding year, employees, revenue and ticker from Wikidata. upscale_image ($0.01 per image ($0.06 per large image with allowLargeImages)): Upscale images 2x or 4x with Real-ESRGAN (photo or anime model), transparency kept, with public download links. get_topic_trends ($0.003 per topic, coming soon): Interest over time for topics on a shared 0-100 scale (a Google Trends alternative) from official Wikipedia pageviews since 2015: peak, trend, spikes and interest by language. get_trending_topics ($0.0005 per trending article, coming soon): The most-read topics of a day per country or Wikipedia language edition, with views and a one-line description. check_website_traffic_rank ($0.002 per domain ranked (unranked domains free), coming soon): Website popularity from real Chrome user data (CrUX): global rank tier, tier in 40 countries, top countries and monthly trend, plus Majestic rank and referring subnets. search_free_images ($0.001 per image, coming soon): Search freely licensed images on Wikimedia Commons, with license, author and a ready-to-paste attribution line; filter by license, size, orientation and format. Runs are billed to your own Apify account; failures are free and every call has a spending cap. Tools marked coming soon call actors that are not public on the Apify Store yet; until they are, they return a clear error and nothing is charged.",
+  "version": "2.2.0",
+  "description": "Video frames, video to LLM context, scene detection, video to slides, video OCR and AI image upscaling via Kanto Labs' Apify actors.",
+  "long_description": "8 tools backed by Kanto Labs' pay-per-event actors on Apify. extract_video_frames ($0.002 per frame): Extract scene-change or evenly spaced frames from video files, with public image links, timestamps and a free contact sheet. video_to_llm_context ($0.002 per keyframe + $0.008 per audio minute): Turn a video file into AI-readable context: scene list, one keyframe per scene, Whisper transcript per scene and a ready-to-paste text block. detect_video_scenes ($0.018 per video minute (+ $0.002 per clip with splitClips)): Detect every shot in a video file: cut, dissolve and fade timecodes, keyframes, a shot sheet and CSV/JSON/EDL files, optional clips. upscale_image ($0.01 per image ($0.06 per large image with allowLargeImages)): Upscale images 2x or 4x with Real-ESRGAN (photo or anime model), transparency kept, with public download links. video_to_slides ($0.004 per slide + $0.001 per video minute): Extract every unique slide from lecture, webinar and screen-recording files as images with timestamps, slide text (OCR) and one PDF. video_ocr ($0.002 per frame with text): Extract on-screen text from video files (burned-in subtitles, captions, hook text, lower-thirds, slide text) as timed segments with a transcript and SRT/VTT. transcribe_douyin_videos ($0.004 per transcript + $0.003 per extra minute): Transcribe public Douyin (抖音) videos to punctuated Chinese text with timed segments, SRT/VTT subtitles and video metadata. search_1688_products ($0.0009 per product + $0.001 per product page + $0.0005 per image match): Search 1688.com (China wholesale) by keyword, photo or link: CNY/USD prices, MOQ, price tiers, SKUs and supplier badges. Runs are billed to your own Apify account; failures are free and every call has a spending cap.",
   "author": {
     "name": "Kanto Labs",
     "url": "https://apify.com/kantolabs"
@@ -19,20 +19,16 @@
   "license": "MIT",
   "keywords": [
     "apify",
-    "tech-stack",
-    "pdf",
-    "markdown",
-    "seo",
-    "rag",
-    "ocr",
-    "whois",
-    "dns",
     "video",
+    "keyframes",
+    "transcript",
+    "scene-detection",
+    "edl",
+    "slides",
+    "ocr",
+    "subtitles",
+    "llm",
     "images",
-    "domain-authority",
-    "traffic",
-    "company",
-    "trends",
     "upscale"
   ],
   "server": {
@@ -51,60 +47,36 @@
   },
   "tools": [
     {
-      "name": "detect_website_tech_stack",
-      "description": "Detect the technologies a website runs on: CMS, ecommerce, frameworks, analytics, CDN, hosting (7,600+ fingerprints). $0.003 per website."
-    },
-    {
-      "name": "convert_document_to_markdown",
-      "description": "Convert PDF, DOCX, PPTX, XLSX, EPUB, HTML and more from a URL to Markdown, with page/word counts and optional RAG chunks. $0.004 per document."
-    },
-    {
-      "name": "audit_website_seo",
-      "description": "On-page SEO audit: 0-100 score and prioritized issues, robots.txt, sitemap, llms.txt and AI-crawler checks, optional broken links and crawl. $0.004 per page."
-    },
-    {
-      "name": "extract_text_from_image",
-      "description": "OCR text from images, screenshots, photos and scanned PDFs, in reading order with confidence and optional line boxes. $0.003 per image or PDF page ($0.008 with quality \"accurate\")."
-    },
-    {
-      "name": "lookup_domain",
-      "description": "Domain RDAP/WHOIS, DNS records, SSL certificate expiry and SPF/DKIM/DMARC email security grade. $0.003 per domain."
-    },
-    {
       "name": "extract_video_frames",
       "description": "Extract scene-change or evenly spaced frames from video files, with public image links, timestamps and a free contact sheet. $0.002 per frame."
     },
     {
-      "name": "download_images",
-      "description": "Download every image from web pages or image links, de-duplicated and filtered, with public download URLs. $0.002 per image."
+      "name": "video_to_llm_context",
+      "description": "Turn a video file into AI-readable context: scene list, one keyframe per scene, Whisper transcript per scene and a ready-to-paste text block. $0.002 per keyframe + $0.008 per audio minute."
     },
     {
-      "name": "check_domain_authority",
-      "description": "0-100 domain authority from the open Common Crawl web graph (133M domains): web rank, PageRank rank, top-% percentile and monthly trend. $0.001 per domain scored (unranked domains free)."
-    },
-    {
-      "name": "enrich_company",
-      "description": "Company profile from a domain or name: logo, description, social profiles, app links and key pages, plus industry, HQ, founding year, employees, revenue and ticker from Wikidata. $0.003 per company enriched."
+      "name": "detect_video_scenes",
+      "description": "Detect every shot in a video file: cut, dissolve and fade timecodes, keyframes, a shot sheet and CSV/JSON/EDL files, optional clips. $0.018 per video minute (+ $0.002 per clip with splitClips)."
     },
     {
       "name": "upscale_image",
       "description": "Upscale images 2x or 4x with Real-ESRGAN (photo or anime model), transparency kept, with public download links. $0.01 per image ($0.06 per large image with allowLargeImages)."
     },
     {
-      "name": "get_topic_trends",
-      "description": "Interest over time for topics on a shared 0-100 scale (a Google Trends alternative) from official Wikipedia pageviews since 2015: peak, trend, spikes and interest by language. $0.003 per topic. (Coming soon.)"
+      "name": "video_to_slides",
+      "description": "Extract every unique slide from lecture, webinar and screen-recording files as images with timestamps, slide text (OCR) and one PDF. $0.004 per slide + $0.001 per video minute."
     },
     {
-      "name": "get_trending_topics",
-      "description": "The most-read topics of a day per country or Wikipedia language edition, with views and a one-line description. $0.0005 per trending article. (Coming soon.)"
+      "name": "video_ocr",
+      "description": "Extract on-screen text from video files (burned-in subtitles, captions, hook text, lower-thirds, slide text) as timed segments with a transcript and SRT/VTT. $0.002 per frame with text."
     },
     {
-      "name": "check_website_traffic_rank",
-      "description": "Website popularity from real Chrome user data (CrUX): global rank tier, tier in 40 countries, top countries and monthly trend, plus Majestic rank and referring subnets. $0.002 per domain ranked (unranked domains free). (Coming soon.)"
+      "name": "transcribe_douyin_videos",
+      "description": "Transcribe public Douyin (抖音) videos to punctuated Chinese text with timed segments, SRT/VTT subtitles and video metadata. $0.004 per transcript + $0.003 per extra minute."
     },
     {
-      "name": "search_free_images",
-      "description": "Search freely licensed images on Wikimedia Commons, with license, author and a ready-to-paste attribution line; filter by license, size, orientation and format. $0.001 per image. (Coming soon.)"
+      "name": "search_1688_products",
+      "description": "Search 1688.com (China wholesale) by keyword, photo or link: CNY/USD prices, MOQ, price tiers, SKUs and supplier badges. $0.0009 per product + $0.001 per product page + $0.0005 per image match."
     }
   ],
   "user_config": {

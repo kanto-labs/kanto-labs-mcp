@@ -2,18 +2,18 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Akhiyugo/kanto-labs-mcp",
   "title": "Kanto Labs",
-  "description": "Web data, SEO, domain, company, trends, OCR, document and image tools for AI assistants via Apify.",
+  "description": "Video frames, LLM context, scenes, slides, video OCR, upscaling, Douyin transcripts, 1688 search.",
   "repository": {
     "url": "https://github.com/kanto-labs/kanto-labs-mcp",
     "source": "github"
   },
   "websiteUrl": "https://apify.com/kantolabs",
-  "version": "1.2.0",
+  "version": "2.2.0",
   "packages": [
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/kanto-labs/kanto-labs-mcp/releases/download/v1.2.0/kanto-labs-mcp.mcpb",
-      "fileSha256": "62c70be545f2dd14a992d5a285be8ea7a1db7cdb37b2a74345ec20d7d47568a8",
+      "identifier": "https://github.com/kanto-labs/kanto-labs-mcp/releases/download/v2.2.0/kanto-labs-mcp.mcpb",
+      "fileSha256": "b708698494144e31f275e6a2953f68d3751e3eaaceab4a7b929a933b0d91757f",
       "transport": {
         "type": "stdio"
       },

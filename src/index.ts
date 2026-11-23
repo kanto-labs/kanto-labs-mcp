@@ -45,6 +45,8 @@ export interface ActorSpec {
   itemNoun?: string; // what one result item is, when it differs from the charged unit (e.g. "video" vs "frame")
   chargeCountField?: string; // numeric item field = charged events in that item (default 1 per successful item)
   itemPriceRules?: { when: Record<string, string | number | boolean>; priceUsd: number }[]; // first match wins
+  extraCharges?: { countField: string; priceUsd: number; noun: string }[]; // further events billed per item (item field = count)
+  summaryRules?: { when: Record<string, string | number | boolean>; summary: string }[]; // per-row summary template, first match (actors with several row types)
   defaults?: Record<string, unknown>; // actor input defaults applied when the caller omits the param
   fixedInput?: Record<string, unknown>; // actor input always sent and not exposed as a param (e.g. {"mode": "trending"})
   comingSoon?: boolean; // actor not public on the Apify Store yet: tool is listed with a notice, 404s explained
@@ -322,10 +324,13 @@ export async function runActor(actor: ActorSpec, args: Record<string, unknown>) 
     const price = rule ? rule.priceUsd : actor.priceUsdPerResult;
     if (price > 0) charged += n; // a rule with priceUsd 0 marks a free row (e.g. an unranked domain)
     cost += n * price;
+    for (const x of actor.extraCharges || []) cost += (Number(getPath(i, x.countField)) || 0) * x.priceUsd;
   }
   const itemNoun = actor.itemNoun || actor.resultNoun;
   const priceNote = actor.itemPriceRules?.some((r) => r.priceUsd > 0) ? "base price " : "";
-  const lines = items.slice(0, 50).map((i) => "- " + fill(i.error ? actor.errorSummary : actor.summary, i));
+  const rowSummary = (i: Record<string, unknown>) =>
+    actor.summaryRules?.find((r) => Object.entries(r.when).every(([k, v]) => getPath(i, k) === v))?.summary ?? actor.summary;
+  const lines = items.slice(0, 50).map((i) => "- " + fill(i.error ? actor.errorSummary : rowSummary(i), i));
   if (items.length > 50) lines.push(`- ...and ${items.length - 50} more`);
 
   const notes: string[] = [];
@@ -339,7 +344,7 @@ export async function runActor(actor: ActorSpec, args: Record<string, unknown>) 
       (actor.chargeCountField || actor.itemPriceRules?.some((r) => r.priceUsd === 0)
         ? `, ${charged} ${actor.resultNoun}(s) charged. `
         : ". ") +
-      `Estimated charge ${usd(cost)} to your Apify account (${priceNote}${usd(actor.priceUsdPerResult)} per ${actor.resultNoun}, failures free; cap ${usd(cap)}).`,
+      `Estimated charge ${usd(cost)} to your Apify account (${priceNote}${usd(actor.priceUsdPerResult)} per ${actor.resultNoun}${(actor.extraCharges || []).map((x) => ` + ${usd(x.priceUsd)} per ${x.noun}`).join("")}, failures free; cap ${usd(cap)}).`,
     ...lines,
     ...notes,
   ].join("\n");

@@ -1,28 +1,20 @@
 # Kanto Labs MCP server
 
 <!-- tools:start -->
-An [MCP](https://modelcontextprotocol.io) server that gives AI assistants (Claude, Cursor, VS Code Copilot and any other MCP client) 14 web, data and media tools, backed by Kanto Labs' actors on the [Apify Store](https://apify.com/kantolabs):
+An [MCP](https://modelcontextprotocol.io) server that gives AI assistants (Claude, Cursor, VS Code Copilot and any other MCP client) 8 video and image tools, backed by Kanto Labs' actors on the [Apify Store](https://apify.com/kantolabs):
 
 | Tool | What it does | Price |
 |---|---|---|
-| `detect_website_tech_stack` | Detect the technologies a website runs on: CMS, ecommerce, frameworks, analytics, CDN, hosting (7,600+ fingerprints). | **$0.003** per website |
-| `convert_document_to_markdown` | Convert PDF, DOCX, PPTX, XLSX, EPUB, HTML and more from a URL to Markdown, with page/word counts and optional RAG chunks. | **$0.004** per document |
-| `audit_website_seo` | On-page SEO audit: 0-100 score and prioritized issues, robots.txt, sitemap, llms.txt and AI-crawler checks, optional broken links and crawl. | **$0.004** per page |
-| `extract_text_from_image` | OCR text from images, screenshots, photos and scanned PDFs, in reading order with confidence and optional line boxes. | **$0.003** per image or PDF page ($0.008 with quality "accurate") |
-| `lookup_domain` | Domain RDAP/WHOIS, DNS records, SSL certificate expiry and SPF/DKIM/DMARC email security grade. | **$0.003** per domain |
 | `extract_video_frames` | Extract scene-change or evenly spaced frames from video files, with public image links, timestamps and a free contact sheet. | **$0.002** per frame |
-| `download_images` | Download every image from web pages or image links, de-duplicated and filtered, with public download URLs. | **$0.002** per image |
-| `check_domain_authority` | 0-100 domain authority from the open Common Crawl web graph (133M domains): web rank, PageRank rank, top-% percentile and monthly trend. | **$0.001** per domain scored (unranked domains free) |
-| `enrich_company` | Company profile from a domain or name: logo, description, social profiles, app links and key pages, plus industry, HQ, founding year, employees, revenue and ticker from Wikidata. | **$0.003** per company enriched |
+| `video_to_llm_context` | Turn a video file into AI-readable context: scene list, one keyframe per scene, Whisper transcript per scene and a ready-to-paste text block. | **$0.002** per keyframe + $0.008 per audio minute |
+| `detect_video_scenes` | Detect every shot in a video file: cut, dissolve and fade timecodes, keyframes, a shot sheet and CSV/JSON/EDL files, optional clips. | **$0.018** per video minute (+ $0.002 per clip with splitClips) |
 | `upscale_image` | Upscale images 2x or 4x with Real-ESRGAN (photo or anime model), transparency kept, with public download links. | **$0.01** per image ($0.06 per large image with allowLargeImages) |
-| `get_topic_trends` (coming soon) | Interest over time for topics on a shared 0-100 scale (a Google Trends alternative) from official Wikipedia pageviews since 2015: peak, trend, spikes and interest by language. | **$0.003** per topic |
-| `get_trending_topics` (coming soon) | The most-read topics of a day per country or Wikipedia language edition, with views and a one-line description. | **$0.0005** per trending article |
-| `check_website_traffic_rank` (coming soon) | Website popularity from real Chrome user data (CrUX): global rank tier, tier in 40 countries, top countries and monthly trend, plus Majestic rank and referring subnets. | **$0.002** per domain ranked (unranked domains free) |
-| `search_free_images` (coming soon) | Search freely licensed images on Wikimedia Commons, with license, author and a ready-to-paste attribution line; filter by license, size, orientation and format. | **$0.001** per image |
+| `video_to_slides` | Extract every unique slide from lecture, webinar and screen-recording files as images with timestamps, slide text (OCR) and one PDF. | **$0.004** per slide + $0.001 per video minute |
+| `video_ocr` | Extract on-screen text from video files (burned-in subtitles, captions, hook text, lower-thirds, slide text) as timed segments with a transcript and SRT/VTT. | **$0.002** per frame with text |
+| `transcribe_douyin_videos` | Transcribe public Douyin (抖音) videos to punctuated Chinese text with timed segments, SRT/VTT subtitles and video metadata. | **$0.004** per transcript + $0.003 per extra minute |
+| `search_1688_products` | Search 1688.com (China wholesale) by keyword, photo or link: CNY/USD prices, MOQ, price tiers, SKUs and supplier badges. | **$0.0009** per product + $0.001 per product page + $0.0005 per image match |
 
 Failed or unreachable inputs are **not charged**.
-
-> **Coming soon:** `get_topic_trends`, `get_trending_topics`, `check_website_traffic_rank`, `search_free_images` are listed already, but their actors are not yet public on the Apify Store; until they are, calls to them return an "actor not yet public" error (nothing is charged).
 <!-- tools:end -->
 
 ## How billing works
@@ -104,23 +96,14 @@ Any client that launches stdio servers works: command `npx`, args `-y github:kan
 
 ## Example prompts
 
-- "What is stripe.com built with? And shopify.com?"
-- "Convert https://arxiv.org/pdf/1706.03762 to Markdown and summarize section 3."
-- "Audit the SEO of https://example.com and list the three most important fixes."
-- "Crawl up to 20 pages of example.com, check broken links, keep it under $0.10."
-- "Read the text on this receipt: https://example.com/receipt.jpg - what is the total?"
-- "OCR this scanned Japanese PDF with the accurate model, first 5 pages only."
-- "When do stripe.com and shopify.com expire, who is their registrar, and do they have DMARC set up?"
-- "Is kanto-example-name.com still available to register?"
 - "Pull 8 frames from https://media.w3.org/2010/05/sintel/trailer.mp4 and describe what happens in the video."
-- "Download all product images wider than 300 px from https://books.toscrape.com/ as WEBP."
-- "Which of these link-building prospects has the highest domain authority: example-blog.com, another-site.org, third-site.net?"
-- "Enrich hubspot.com, Siemens and canva.com: industry, HQ, employees, logo and LinkedIn page."
+- "Summarize this webinar recording scene by scene: https://example.com/webinar.mp4"
+- "Turn https://example.com/demo.mp4 into chapters with timestamps, using the transcript and keyframes."
+- "How many shots does this ad have, and how fast is it cut? https://example.com/ad.mp4"
+- "Give me an EDL of every cut in https://example.com/edit.mp4 and split it into one clip per shot."
 - "Upscale https://example.com/product-small.jpg 4x as PNG."
-- "Compare interest in ChatGPT, Gemini and Claude over the past 12 months. Which is growing?"
-- "What were people in Japan and Germany reading about yesterday?"
-- "How popular are zalando.de and allegro.pl, and in which countries?"
-- "Find 10 landscape photos of the Eiffel Tower at night that need no attribution."
+- "Get the slides of this lecture recording as a PDF, with the text of each slide: https://example.com/lecture.mp4"
+- "Read the burned-in subtitles of https://example.com/clip.mp4 and give me an SRT file."
 
 ## Tool parameters
 
@@ -132,20 +115,14 @@ All tools also accept:
 | `timeoutSecs` | Give up after this many seconds (10-300, default 280). Apify's synchronous runs are limited to 300 s, so split big batches. |
 
 <!-- params:start -->
-`detect_website_tech_stack`: `urls` (required), `minConfidence`, `includeDescriptions`.
-`convert_document_to_markdown`: `documentUrls` (required), `chunkSize`, `chunkOverlap`, `includeMarkdown`, `maxFileSizeMb`.
-`audit_website_seo`: `urls` (required), `maxPagesPerSite`, `checkBrokenLinks`, `maxLinksToCheckPerPage`.
-`extract_text_from_image`: `sources` (required), `quality` (`fast`/`accurate`), `includeLines` (default false here), `minConfidence` (`0.3`/`0.4`/`0.5`/`0.6`/`0.7`/`0.8`), `pdfMode` (`auto`/`ocr`), `maxPdfPages`, `pdfDpi`.
-`lookup_domain`: `domains` (required), `includeWhois`, `includeDns`, `includeSsl`, `includeEmailSecurity`.
 `extract_video_frames`: `videoUrls` (required), `mode` (`auto`/`scenes`/`count`/`interval`), `frameCount`, `intervalSeconds`, `maxFramesPerVideo`, `sceneThreshold` (`0.15`/`0.2`/`0.3`/`0.4`/`0.5`), `imageFormat` (`jpg`/`png`/`webp`), `maxWidth`, `contactSheet`.
-`download_images`: `urls` (required), `maxImagesPerPage`, `minWidth`, `minHeight`, `minFileSizeKb`, `allowedFormats`, `includeSvg`, `includeCssBackgrounds`, `includeIcons`, `convertTo` (`original`/`jpg`/`png`/`webp`), `maxDimension`, `dedupe`.
-`check_domain_authority`: `domains` (required).
-`enrich_company`: `companies` (required), `includeWebsite`, `includeWikidata`, `maxConcurrency`.
+`video_to_llm_context`: `videoUrls` (required), `maxKeyframes`, `transcribe`, `language`, `sceneThreshold` (`0.15`/`0.2`/`0.3`/`0.4`/`0.5`), `gridImage`, `includeImageUrlsInContext`, `keyframeMaxWidth`, `imageFormat` (`jpg`/`png`/`webp`), `maxDurationMinutes`.
+`detect_video_scenes`: `videoUrls` (required), `threshold`, `minShotSeconds`, `detectDissolves`, `keyframes`, `shotSheetImage`, `splitClips`, `maxClips`, `maxDurationMinutes`.
 `upscale_image`: `imageUrls` (required), `scale` (`4`/`2`), `model` (`general`/`anime`), `outputFormat` (`jpeg`/`png`/`webp`), `quality`, `allowLargeImages`.
-`get_topic_trends`: `keywords` (required), `language`, `timeRange` (`past7Days`/`past30Days`/`past90Days`/`past12Months`/`past5Years`/`all`/`custom`), `startDate`, `endDate`, `granularity` (`auto`/`daily`/`weekly`/`monthly`), `includeRedirects`, `includeLanguages`, `maxLanguages`, `platform` (`all-access`/`desktop`/`mobile-web`/`mobile-app`).
-`get_trending_topics`: `trendingCountries`, `trendingProjects`, `trendingDate`, `maxTrending`, `platform` (`all-access`/`desktop`/`mobile-web`/`mobile-app`).
-`check_website_traffic_rank`: `domains` (required), `includeCountries`.
-`search_free_images`: `queries` (required), `maxResultsPerQuery`, `license` (`any`/`commercialNoShareAlike`/`noAttribution`), `minWidth`, `minHeight`, `orientation` (`any`/`landscape`/`portrait`/`square`), `fileTypes`, `thumbnailWidth`, `excludeRestricted`, `language`.
+`video_to_slides`: `videoUrls` (required), `sensitivity` (`low`/`medium`/`high`), `minSlideSeconds`, `ocr`, `ocrLanguage` (`en`/`latin`/`cyrillic`/`korean`/`arabic`/`devanagari`/`greek`/`thai`), `outputPdf`, `contactSheet`, `imageFormat` (`jpg`/`png`/`webp`), `maxWidth`, `maxSlidesPerVideo`, `maxVideoMinutes`.
+`video_ocr`: `videoUrls` (default [] here), `frameUrls`, `datasetId`, `sampleIntervalSeconds`, `ocrLanguage` (`en`/`latin`/`cyrillic`/`korean`/`arabic`/`devanagari`/`greek`/`thai`), `textRegion` (`full`/`bottom`/`top`), `minConfidence`, `minTextLength`, `maxFramesPerVideo`, `maxVideoMinutes`.
+`transcribe_douyin_videos`: `videoUrls` (default [] here), `collectionUrls`, `maxVideosPerSource`, `maxVideoMinutes`.
+`search_1688_products`: `keywords`, `productUrls`, `imageUrls`, `maxResultsPerImage`, `maxItemsPerKeyword` (default 20 here), `includeDetails`, `sortBy` (`relevance`/`sales`/`priceAsc`/`priceDesc`), `minPrice`, `maxPrice`, `province`, `supplierType` (`any`/`manufacturer`/`factoryVerified`/`superFactory`), `excludeAds`.
 <!-- params:end -->
 
 Each call returns two text blocks: a short human-readable summary (results, failures, cost) and compact JSON with every result item (empty fields dropped, very long text truncated at `KANTO_MAX_TEXT_CHARS`).
@@ -157,12 +134,12 @@ Each call returns two text blocks: a short human-readable summary (results, fail
 | `APIFY_TOKEN` | - (required) | Your Apify API token. `APIFY_API_TOKEN` is accepted too. |
 | `KANTO_MAX_CHARGE_USD` | `1.00` | Default spending cap per call. |
 | `KANTO_TIMEOUT_SECS` | `280` | Default timeout per call (max 300). |
-| `KANTO_MAX_TEXT_CHARS` | `100000` | Truncate any single text field (e.g. a long document's Markdown) beyond this. |
+| `KANTO_MAX_TEXT_CHARS` | `100000` | Truncate any single text field (e.g. a long transcript) beyond this. |
 | `KANTO_ACTORS_CONFIG` | bundled file | Path to an alternative `actors.config.json`. |
 
 ## Adding actors
 
-Tools are generated from [`actors.config.json`](actors.config.json): the Apify actor ID, the tool description, typed parameters, price (with optional per-result price rules and a per-result charge count for actors that bill several events per row), input defaults, and a one-line summary template. Adding an actor is a config entry, no code. `comingSoon: true` marks an actor that is not public on the Apify Store yet (the tool is listed with a notice and a 404 is explained); `fixedInput` pins actor input for a tool (one actor can back several tools). `npm run build` regenerates the tool table above and `manifest.json` from the config.
+Tools are generated from [`actors.config.json`](actors.config.json): the Apify actor ID, the tool description, typed parameters, price (with optional per-result price rules, a per-result charge count for actors that bill several events per row, and extra charge events such as audio minutes or clips), input defaults, and a one-line summary template. Adding an actor is a config entry, no code. `comingSoon: true` marks an actor that is not public on the Apify Store yet (the tool is listed with a notice and a 404 is explained); `fixedInput` pins actor input for a tool (one actor can back several tools). `npm run build` regenerates the tool table above and `manifest.json` from the config.
 
 ## Development
 
@@ -170,14 +147,14 @@ Tools are generated from [`actors.config.json`](actors.config.json): the Apify a
 npm install
 npm run build
 npm test                                   # offline: lists tools, checks the missing-token error
-APIFY_TOKEN=... npm run test:live          # one tiny real call per tool (about $0.04)
+APIFY_TOKEN=... npm run test:live          # one tiny real call per tool (about $0.05)
 npx @modelcontextprotocol/inspector node dist/index.js   # interactive inspector
 npm run bundle                             # builds build/kanto-labs-mcp.mcpb
 ```
 
 ## Privacy
 
-The server runs on your machine and talks only to `api.apify.com`. The URLs and domains you pass are processed by the actors on Apify; see each actor's page on the Apify Store. Your token is sent only to Apify and is never logged.
+The server runs on your machine and talks only to `api.apify.com`. The URLs you pass are processed by the actors on Apify; see each actor's page on the Apify Store. Your token is sent only to Apify and is never logged.
 
 ## License
 

@@ -46,7 +46,7 @@ put("server.json", JSON.stringify(server, null, 2) + "\n");
 // ---- README.md
 const mark = (a) => `\`${a.tool}\`${a.comingSoon ? " (coming soon)" : ""}`;
 const toolsBlock = [
-  `An [MCP](https://modelcontextprotocol.io) server that gives AI assistants (Claude, Cursor, VS Code Copilot and any other MCP client) ${actors.length} web, data and media tools, backed by Kanto Labs' actors on the [Apify Store](https://apify.com/kantolabs):`,
+  `An [MCP](https://modelcontextprotocol.io) server that gives AI assistants (Claude, Cursor, VS Code Copilot and any other MCP client) ${actors.length} video and image tools, backed by Kanto Labs' actors on the [Apify Store](https://apify.com/kantolabs):`,
   "",
   "| Tool | What it does | Price |",
   "|---|---|---|",
